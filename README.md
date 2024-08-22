@@ -33,6 +33,6 @@ jupyter labextension develop . --overwrite
 jupyter server extension enable jupyterlab_myst
 
 # An example notebook can be found at ./tests/notebook/citation-tooltips.ipynb
-cd tests/notebook
+cd tests/notebooks
 jupyter lab
 ```
