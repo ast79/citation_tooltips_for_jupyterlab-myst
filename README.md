@@ -1,6 +1,6 @@
 # citation tooltips for jupyterlab-myst
 
-A patch to the jupyterlab_myst 2.4.2 release that adds a custom rfg role which displays the associated citation in a popup tooltip. Their hover link counters operate seperately from those of the cite role and use the red color.
+A patch to the jupyterlab_myst 2.4.2 release that adds a custom rfg role (see https://mystmd.org/guide/quickstart-myst-markdown#directives-and-roles) which displays the associated citation in a popup tooltip. Their hover link counters operate seperately from those of the cite role and use the red color.
 
 This upload is little more than a hack to discover how it could be done that is not intended for publication beyond this step.  jupyterlab_myst doesn't yet render MyST citations in notebooks or in Markdown file previews, it doesn't even read in Bibtex files. The 'myst build' commands will parse rfg role instances and render no output up completion.
 
