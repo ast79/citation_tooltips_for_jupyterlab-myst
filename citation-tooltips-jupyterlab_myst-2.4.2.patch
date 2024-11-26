@@ -839,8 +839,8 @@ diff -urN jupyterlab_myst-2.4.2/tests/notebooks/book.bib jupyterlab_myst-2.4.2-p
 +%% End of file `book.bib'.
 diff -urN jupyterlab_myst-2.4.2/tests/notebooks/citation-tooltips.ipynb jupyterlab_myst-2.4.2-patched/tests/notebooks/citation-tooltips.ipynb
 --- jupyterlab_myst-2.4.2/tests/notebooks/citation-tooltips.ipynb	1970-01-01 01:00:00.000000000 +0100
-+++ jupyterlab_myst-2.4.2-patched/tests/notebooks/citation-tooltips.ipynb	2024-11-26 13:01:26.763668556 +0100
-@@ -0,0 +1,111 @@
++++ jupyterlab_myst-2.4.2-patched/tests/notebooks/citation-tooltips.ipynb	2024-11-26 15:05:29.500900343 +0100
+@@ -0,0 +1,112 @@
 +{
 + "cells": [
 +  {
@@ -895,6 +895,7 @@ diff -urN jupyterlab_myst-2.4.2/tests/notebooks/citation-tooltips.ipynb jupyterl
 +   "source": [
 +    "% Fails to resolve the dynamic parts in the cross-references taken from\n",
 +    "% https://mystmd.org/guide/quickstart-myst-markdown#links-cross-references\n",
++    "% (after adding the required installs and tidbits from the mystmc docs folder)\n",
 +    "\n",
 +    "As you have seen in the links in MyST (e.g. [](./frontmatter.md)), there is information that is pulled forward into your reading context on hover or click. We believe it is important to provide as much possible context when you are reading on elements like links to other pages, cross-references to figures, tables and equations as well as traditional academic citations {rfg}`article-full` (**👈 see the footnote!**). Additionally, all of these have fallbacks in static PDF or Word documents.\n",
 +    "\n",
@@ -921,7 +922,7 @@ diff -urN jupyterlab_myst-2.4.2/tests/notebooks/citation-tooltips.ipynb jupyterl
 +  {
 +   "cell_type": "code",
 +   "execution_count": null,
-+   "id": "4dd3ef8f-bb44-4cd6-8b49-543a8226c7fd",
++   "id": "0976b2ab-f512-46b8-a6ef-d37ef956f5c7",
 +   "metadata": {},
 +   "outputs": [],
 +   "source": []
