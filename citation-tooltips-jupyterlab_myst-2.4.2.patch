@@ -1,7 +1,7 @@
-diff -urN jupyterlab_myst-2.4.2/README.md jupyterlab_myst-2.4.2-patch-source/README.md
+diff -urN jupyterlab_myst-2.4.2/README.md jupyterlab_myst-2.4.2-patched/README.md
 --- jupyterlab_myst-2.4.2/README.md	2020-02-02 01:00:00.000000000 +0100
-+++ jupyterlab_myst-2.4.2-patch-source/README.md	2024-10-11 08:18:57.599392565 +0200
-@@ -1,21 +1,8 @@
++++ jupyterlab_myst-2.4.2-patched/README.md	2024-11-26 13:56:11.948115048 +0100
+@@ -1,21 +1,12 @@
 -# JupyterLab MyST Extension
 +# citation tooltips for jupyterlab-myst
  
@@ -9,12 +9,14 @@ diff -urN jupyterlab_myst-2.4.2/README.md jupyterlab_myst-2.4.2-patch-source/REA
 -[![GitHub Actions Status][actions-badge]][actions-link]
 -[![Launch on Binder][binder-badge]][binder-link]
 -[![PyPI][pypi-badge]][pypi-link]
-+A patch to the jupyterlab_myst 2.4.2 release that adds a custom rfg role (see https://mystmd.org/guide/quickstart-myst-markdown#directives-and-roles) which displays the associated citation in a popup tooltip. Their hover link counters operate seperately from those of the cite role and use the red color. Mouse clicks on the hover link freeze or unfreeze the display of its tooltip and a displayed tooltip is draggable.
++A patch to the jupyterlab_myst 2.4.2 release that adds a custom rfg [MyST role](https://mystmd.org/guide/quickstart-myst-markdown#directives-and-roles) which displays the associated citation in a popup tooltip. Their hover link counters operate seperately from those of the cite role and use the red color. Mouse clicks on the hover link freeze or unfreeze the display of its tooltip and a displayed tooltip is draggable. Notes can be added to these citation tooltips by associating [MyST footnote definitions](https://mystmd.org/guide/typography#footnotes) to the rfg role. 
  
 -Render markdown cells using [MyST Markdown](https://mystmd.org/), including support for rich frontmatter, interactive references, admonitions, figure numbering, tabs, proofs, exercises, glossaries, cards, and grids!
--
++The install instructions below end by orienting towards an example notebook that illustrates these features.
+ 
 -![](./images/walkthrough.gif)
--
++The software is at a pre-alpha release stage and should have bugs. The core functionality kinda seems to work, but the code remains hacky and not intended for publication beyond this step for now. It should see only minor corrections for bugs until the projected backend additions will be operational.
+ 
 -> **Note**: If you are looking for the version of this repository based on jupyterlab-markup,
 -> see the [`v0 branch`](https://github.com/executablebooks/jupyterlab-myst/tree/v0).
 -
@@ -22,17 +24,18 @@ diff -urN jupyterlab_myst-2.4.2/README.md jupyterlab_myst-2.4.2-patch-source/REA
 -> This extension is composed of a Python package named `jupyterlab_myst`
 -> for the server extension and a NPM package named `jupyterlab-myst`
 -> for the frontend extension.
-+This upload is little more than a hack to discover how it could be done that is not intended for publication beyond this step.  jupyterlab_myst doesn't yet render MyST citations in notebooks or in Markdown file previews, it doesn't even read in Bibtex files. The 'myst build' commands will parse rfg role instances and render no output up completion.
++jupyterlab_myst doesn't yet render MyST citations in notebooks or in Markdown file previews, it doesn't even read in Bibtex files, and displays a "Citation Not Found" message when the pointer hovers over the citation. The 'myst build' commands will parse rfg role instances and render no output upon completion.
  
  ## Requirements
  
-@@ -23,200 +10,29 @@
+@@ -23,200 +14,29 @@
  
  ## Install
  
 -To install the extension, execute:
--
--```bash
++To install the extension inside a virtual environment, a download of the citation-tooltips-jupyterlab_myst-2.4.2.patch file from the repository is needed, and so are the following commands in a code shell starting at the download directory:
+ 
+ ```bash
 -pip install jupyterlab_myst
 -```
 -
@@ -76,9 +79,11 @@ diff -urN jupyterlab_myst-2.4.2/README.md jupyterlab_myst-2.4.2-patch-source/REA
 -![](./images/tasklists-in-jupyterlab.gif)
 -
 -## Usage
--
++wget https://github.com/jupyter-book/jupyterlab-myst/releases/download/v2.4.2/jupyterlab_myst-2.4.2.tar.gz
+ 
 -[MyST][myst-quickstart] is a flavour of Markdown, which combines the fluid experience of writing Markdown with the programmable extensibility of reStructuredText. This extension for JupyterLab makes it easier to develop rich, computational narratives, technical documentation, and open scientific communication.
--
++tar xfz jupyterlab_myst-2.4.2.tar.gz
+ 
 -### Execution 🚀
 -
 -To facilitate inline expressions, `jupyterlab-myst` defines a `jupyterlab-myst:executor` plugin. This plugin sends expression code fragments to the active kernel when the user "executes" a Markdown cell. To disable this functionality, disable the `jupyterlab-myst:executor` plugin with:
@@ -93,21 +98,15 @@ diff -urN jupyterlab_myst-2.4.2/README.md jupyterlab_myst-2.4.2-patch-source/REA
 -Executing the notebook will cause each cell to be considered trusted.
 -
 -To facilitate this extension of the trust model, the `jupyterlab_myst` server extension replaces the `NotebookNotary` from `nbformat` with `MySTNotebookNotary`. This can be disabled with
-+To install the extension inside a virtual environment, a download of the citation-tooltips-jupyterlab_myst-2.4.2.patch file from the repository is needed, and so are the following commands in a code shell starting at the download directory:
- 
- ```bash
+-
+-```bash
 -jupyter server extension disable jupyterlab-myst
 -```
-+wget https://github.com/jupyter-book/jupyterlab-myst/releases/download/v2.4.2/jupyterlab_myst-2.4.2.tar.gz
- 
+-
 -By disabling this extension, it will not be possible to render unsafe expression results from inline expressions; the `MySTNotebookNotary` adds additional code that makes it possible to mark Markdown cells as trusted.
-+tar xfz jupyterlab_myst-2.4.2.tar.gz
- 
+-
 -## Uninstall
-+cd jupyterlab_myst-2.4.2
-+ 
-+patch -p1 < ../citation-tooltips-jupyterlab_myst-2.4.2.patch
- 
+-
 -To remove the extension, execute:
 -
 -```bash
@@ -122,12 +121,15 @@ diff -urN jupyterlab_myst-2.4.2/README.md jupyterlab_myst-2.4.2-patch-source/REA
 -```bash
 -jupyter server extension list
 -```
-+# The remainder corresponds to the development install steps for jupyterlab-myst
-+# at https://github.com/jupyter-book/jupyterlab-myst#development-install
++cd jupyterlab_myst-2.4.2
++ 
++patch -p1 < ../citation-tooltips-jupyterlab_myst-2.4.2.patch
  
 -If the server extension is installed and enabled, but you are not seeing
 -the frontend extension, check the frontend extension is installed:
--
++# The remainder corresponds to the development install steps for jupyterlab-myst
++# at https://github.com/jupyter-book/jupyterlab-myst#development-install
+ 
 -```bash
 -jupyter labextension list
 -```
@@ -155,9 +157,9 @@ diff -urN jupyterlab_myst-2.4.2/README.md jupyterlab_myst-2.4.2-patch-source/REA
 -# Rebuild extension Typescript source after making changes
 -jlpm build
 -```
--
--You can watch the source directory and run JupyterLab at the same time in different terminals to watch for changes in the extension's source and automatically rebuild the extension.
  
+-You can watch the source directory and run JupyterLab at the same time in different terminals to watch for changes in the extension's source and automatically rebuild the extension.
+-
 -```bash
 -# Watch the source directory in one terminal, automatically rebuilding when needed
 -jlpm watch
@@ -238,12 +240,12 @@ diff -urN jupyterlab_myst-2.4.2/README.md jupyterlab_myst-2.4.2-patch-source/REA
 -[binder-link]: https://mybinder.org/v2/gh/executablebooks/jupyterlab-myst/main?urlpath=lab
 -[pypi-badge]: https://img.shields.io/pypi/v/jupyterlab-myst.svg
 -[pypi-link]: https://pypi.org/project/jupyterlab-myst
-diff -urN jupyterlab_myst-2.4.2/src/components/footnotes.tsx jupyterlab_myst-2.4.2-patch-source/src/components/footnotes.tsx
+diff -urN jupyterlab_myst-2.4.2/src/components/footnotes.tsx jupyterlab_myst-2.4.2-patched/src/components/footnotes.tsx
 --- jupyterlab_myst-2.4.2/src/components/footnotes.tsx	1970-01-01 01:00:00.000000000 +0100
-+++ jupyterlab_myst-2.4.2-patch-source/src/components/footnotes.tsx	2024-10-11 07:10:19.928866857 +0200
-@@ -0,0 +1,121 @@
++++ jupyterlab_myst-2.4.2-patched/src/components/footnotes.tsx	2024-11-23 15:14:19.092750677 +0100
+@@ -0,0 +1,156 @@
 +import React, { useState } from 'react';
-+import { MyST, HoverPopover } from 'myst-to-react';
++import { MyST } from 'myst-to-react';
 +import * as HoverCard from '@radix-ui/react-hover-card';
 +import { XRefProvider, useReferences } from '@myst-theme/providers';
 +import type { NodeRenderer } from '@myst-theme/providers';
@@ -264,13 +266,48 @@ diff -urN jupyterlab_myst-2.4.2/src/components/footnotes.tsx jupyterlab_myst-2.4
 +  );
 +}
 +
++function HoverPopover({
++  children,
++  openDelay = 400,
++  card,
++  side,
++  arrowClass = 'fill-white',
++}: {
++  children: React.ReactNode;
++  openDelay?: number;
++  arrowClass?: string;
++  side?: 'top' | 'right' | 'bottom' | 'left';
++  card: React.ReactNode | ((args: { load: boolean }) => React.ReactNode);
++}) {
++  const [load, setLoad] = useState(false);
++
++  return (
++    <HoverCard.Root openDelay={openDelay}>
++      <HoverCard.Trigger asChild onMouseEnter={() => setLoad(true)}>
++        {children}
++      </HoverCard.Trigger>
++      <HoverCard.Portal>
++        <HoverCard.Content
++          className="exclude-from-outline hover-card-content"
++          sideOffset={5}
++          side={side}
++        >
++        {typeof card === 'function' ? load && card({ load }) : card}
++          <HoverCard.Arrow className={arrowClass} />
++        </HoverCard.Content>
++      </HoverCard.Portal>
++    </HoverCard.Root>
++  );
++}
++
 +// Cloned from 'myst-to-react 0.9.0' because it isn't reexported by the module
 +export const FootnoteReference: NodeRenderer = ({ node }) => {
++  const references = useReferences();
++  // const id = {node.identifier as string};
++  console.log('references:', references);
++  const c = <FootnoteDefinition identifier={node.identifier as string} />;
 +  return (
-+    <HoverPopover
-+      openDelay={0}
-+      card={<FootnoteDefinition identifier={node.identifier as string} />}
-+    >
++    <HoverPopover openDelay={0} card={c}>
 +      <span>
 +        <sup className="hover-link">[{node.number ?? node.identifier}]</sup>
 +      </span>
@@ -363,23 +400,106 @@ diff -urN jupyterlab_myst-2.4.2/src/components/footnotes.tsx jupyterlab_myst-2.4
 +    </HoverPopoverHook>
 +  );
 +};
-diff -urN jupyterlab_myst-2.4.2/src/components/index.ts jupyterlab_myst-2.4.2-patch-source/src/components/index.ts
+diff -urN jupyterlab_myst-2.4.2/src/components/index.ts jupyterlab_myst-2.4.2-patched/src/components/index.ts
 --- jupyterlab_myst-2.4.2/src/components/index.ts	1970-01-01 01:00:00.000000000 +0100
-+++ jupyterlab_myst-2.4.2-patch-source/src/components/index.ts	2024-10-11 07:10:25.788602794 +0200
++++ jupyterlab_myst-2.4.2-patched/src/components/index.ts	2024-11-26 13:08:28.604551495 +0100
 @@ -0,0 +1,4 @@
 +export * from './inlineExpression';
 +export * from './listItem';
 +export * from './footnotes';
 +
-diff -urN jupyterlab_myst-2.4.2/src/components/index.tsx jupyterlab_myst-2.4.2-patch-source/src/components/index.tsx
+diff -urN jupyterlab_myst-2.4.2/src/components/index.tsx jupyterlab_myst-2.4.2-patched/src/components/index.tsx
 --- jupyterlab_myst-2.4.2/src/components/index.tsx	2020-02-02 01:00:00.000000000 +0100
-+++ jupyterlab_myst-2.4.2-patch-source/src/components/index.tsx	1970-01-01 01:00:00.000000000 +0100
++++ jupyterlab_myst-2.4.2-patched/src/components/index.tsx	1970-01-01 01:00:00.000000000 +0100
 @@ -1,2 +0,0 @@
 -export * from './inlineExpression';
 -export * from './listItem';
-diff -urN jupyterlab_myst-2.4.2/src/renderers.tsx jupyterlab_myst-2.4.2-patch-source/src/renderers.tsx
+diff -urN jupyterlab_myst-2.4.2/src/myst.ts jupyterlab_myst-2.4.2-patched/src/myst.ts
+--- jupyterlab_myst-2.4.2/src/myst.ts	2020-02-02 01:00:00.000000000 +0100
++++ jupyterlab_myst-2.4.2-patched/src/myst.ts	2024-11-25 16:13:08.129539019 +0100
+@@ -1,4 +1,5 @@
+-import { mystParse } from 'myst-parser';
++import { mystParse, createTokenizer, defaultOptions } from 'myst-parser';
++import type { AllOptions } from 'myst-parser';
+ import { copyNode, References } from 'myst-common';
+ import {
+   abbreviationPlugin,
+@@ -51,7 +52,53 @@
+   trusted: boolean;
+ }
+ 
++type Options = Partial<AllOptions>;
++
++function parseOptions(opts?: Options): AllOptions {
++  const parsedOpts = {
++    vfile: opts?.vfile ?? new VFile(),
++    mdast: { ...defaultOptions.mdast, ...opts?.mdast },
++    markdownit: { ...defaultOptions.markdownit, ...opts?.markdownit },
++    extensions: { ...defaultOptions.extensions, ...opts?.extensions },
++    directives: [...defaultOptions.directives, ...(opts?.directives ?? [])],
++    roles: [...defaultOptions.roles, ...(opts?.roles ?? [])]
++  };
++  return parsedOpts;
++}
++
+ export function markdownParse(text: string): Root {
++  const opts = {
++    markdownit: { linkify: true },
++    directives: [
++      cardDirective,
++      ...gridDirectives,
++      proofDirective,
++      ...exerciseDirectives,
++      ...tabDirectives
++    ],
++    roles: []
++  };
++  const tokenizer = createTokenizer(parseOptions(opts));
++  const state = new tokenizer.core.State(text, tokenizer, { opts });
++  tokenizer.core.process(state);
++  const footnotes = state.env.footnotes;
++  const refs = Object.getOwnPropertyNames(footnotes.refs);
++  const labels = [];
++  let rfgNotes = false;
++  for (let i = 0; i < footnotes.list.length; i++) {
++    labels[i] = footnotes.list[i].label;
++  }
++  for (let l, i = 0; i < refs.length; i++) {
++    l = refs[i].slice(1, refs[i].length);
++    if (!labels.includes(l)) {
++      if (!rfgNotes) {
++        text = text + '\n';
++        rfgNotes = true;
++      }
++      text = text + '\n' + '[' + '^' + l + ']';
++    }
++  }
++
+   const parseMyst = (content: string) => {
+     return mystParse(content, {
+       markdownit: { linkify: true },
+@@ -67,6 +114,10 @@
+   };
+ 
+   const mdast = parseMyst(text);
++  if (rfgNotes) {
++    mdast.children.splice(mdast.children.length - 1 - refs.length, 1);
++  }
++
+   // Parsing individually here requires that link and footnote references are contained to the cell
+   // This is consistent with the current Jupyter markdown renderer
+   unified()
+@@ -222,6 +273,7 @@
+     cell => cell.fragmentMDAST !== undefined
+   );
+   const mdast = buildNotebookMDAST(mystCells);
++  console.log('mdast:', mdast);
+   const {
+     references,
+     frontmatter,
+diff -urN jupyterlab_myst-2.4.2/src/renderers.tsx jupyterlab_myst-2.4.2-patched/src/renderers.tsx
 --- jupyterlab_myst-2.4.2/src/renderers.tsx	2020-02-02 01:00:00.000000000 +0100
-+++ jupyterlab_myst-2.4.2-patch-source/src/renderers.tsx	2024-10-11 07:11:20.582134017 +0200
++++ jupyterlab_myst-2.4.2-patched/src/renderers.tsx	2024-10-15 14:12:56.003292588 +0200
 @@ -1,8 +1,13 @@
  import React from 'react';
 +import { NodeRenderer } from '@myst-theme/providers';
@@ -409,9 +529,9 @@ diff -urN jupyterlab_myst-2.4.2/src/renderers.tsx jupyterlab_myst-2.4.2-patch-so
    html: ({ node }, children) => {
      const { sanitizer } = useSanitizer();
      if (sanitizer !== undefined) {
-diff -urN jupyterlab_myst-2.4.2/src/transforms/citations.ts jupyterlab_myst-2.4.2-patch-source/src/transforms/citations.ts
+diff -urN jupyterlab_myst-2.4.2/src/transforms/citations.ts jupyterlab_myst-2.4.2-patched/src/transforms/citations.ts
 --- jupyterlab_myst-2.4.2/src/transforms/citations.ts	2020-02-02 01:00:00.000000000 +0100
-+++ jupyterlab_myst-2.4.2-patch-source/src/transforms/citations.ts	2024-10-11 07:09:49.962217371 +0200
++++ jupyterlab_myst-2.4.2-patched/src/transforms/citations.ts	2024-11-25 09:42:03.846525390 +0100
 @@ -1,12 +1,17 @@
  import type { Plugin } from 'unified';
 +import type { VFile } from 'vfile';
@@ -431,7 +551,7 @@ diff -urN jupyterlab_myst-2.4.2/src/transforms/citations.ts jupyterlab_myst-2.4.
    const links = selectAll('cite', tree) as GenericNode[];
    links.forEach(async cite => {
      if (cite.children && cite.children.length > 0) {
-@@ -17,6 +22,127 @@
+@@ -17,6 +22,150 @@
    });
  }
  
@@ -460,97 +580,120 @@ diff -urN jupyterlab_myst-2.4.2/src/transforms/citations.ts jupyterlab_myst-2.4.
 +      .map(r => Number(r.identifier))
 +      .filter(num => !Number.isNaN(num) && num > 0)
 +  );
-+  const paragraphs = selectAll('paragraph', tree) as GenericNode[];
 +  let rfgCount = 0;
-+  const defs = [] as GenericNode[];
-+  paragraphs.forEach(async paragraph => {
-+    const roles = selectAll('mystRole', paragraph) as GenericNode[];
-+    roles.forEach(async node => {
-+      if (node.name === 'rfg') {
-+        if (!node.value) {
-+          fileWarn(file, 'rfgReference does not have an identifier', {
-+            node,
-+            source: TRANSFORM_SOURCE,
-+            ruleId: RuleId.roleRegistered
-+          });
-+          return;
-+        }
-+        const kids = paragraph.children ?? undefined;
-+        let i = kids?.length ?? 1;
-+        if (kids) {
-+          for (; i > kids.indexOf(node); i--) {
-+            kids[i] = kids[i - 1];
++  for (let cell = 0, nb_cells = tree.children.length; cell < nb_cells; cell++) {
++    const paragraphs = selectAll(
++      'paragraph',
++      tree.children[cell]
++    ) as GenericNode[];
++    const fds = selectAll(
++      'footnoteDefinition',
++      tree.children[cell]
++    ) as GenericNode[];
++    const defs = [] as GenericNode[];
++    paragraphs.forEach(async paragraph => {
++      const roles = selectAll('mystRole', paragraph) as GenericNode[];
++      roles.forEach(async node => {
++        if (node.name === 'rfg') {
++          if (!node.value) {
++            fileWarn(file, 'rfgReference does not have an identifier', {
++              node,
++              source: TRANSFORM_SOURCE,
++              ruleId: RuleId.roleRegistered
++            });
++            return;
 +          }
-+          const position = node.position;
-+          if (position) {
-+            kids[i] = {
-+              type: 'footnoteReference',
-+              identifier: node.value,
-+              label: node.value,
-+              kind: 'rfg',
-+              position: {
-+                end: { column: 1, line: position.end.line },
-+                start: { column: 1, line: position.start.line }
-+              }
-+            } as unknown as GenericNode;
-+            const identifierNumber = Number(kids[i].identifier);
-+            if (!Number.isNaN(identifierNumber) && identifierNumber > 0) {
-+              kids[i].number = identifierNumber;
-+              kids[i].enumerator = String(identifierNumber);
-+            } else {
-+              rfgCount = nextNumber(rfgCount, reserved);
-+              kids[i].number = rfgCount;
-+              kids[i].enumerator = String(rfgCount);
-+            }
-+            if (node.children && node.children.length > 0) {
-+              return;
-+            }
-+            const parb = {
-+              type: 'paragraph',
-+              children: [node],
-+              position: {
-+                end: { column: 1, line: position.end.line },
-+                start: { column: 1, line: position.start.line }
-+              }
-+            } as unknown as GenericNode;
-+            const def = {
-+              type: 'footnoteDefinition',
-+              identifier: node.value,
-+              label: node.value,
-+              children: [parb],
-+              position: {
-+                end: { column: 1, line: position.end.line },
-+                start: { column: 1, line: position.start.line }
-+              }
-+            } as unknown as GenericNode;
-+            def.number = kids[i].number;
-+            def.enumerator = kids[i].enumerator;
-+            defs[rfgCount - 1] = def;
-+          }
-+        }
-+        node.type = 'cite';
-+        node.label = node.value;
-+        node.identifier = node.value;
-+        node.kind = 'parenthetical';
-+        node.error = true;
-+        delete node.value;
-+        delete node.name;
-+        delete node.position;
-+        node.children = [{ type: 'text', value: node.label }];
-+      }
-+    });
-+  });
 +
-+  const kid = tree.children[0] as GenericNode;
-+  if (kid) {
-+    const kid1 = kid.children?.[0];
-+    if (kid1) {
-+      const kid2 = kid1.children;
-+      if (kid2) {
-+        const l = kid2.length;
-+        const n = defs.length;
-+        for (let i = 0; i < n; i++) {
-+          kid2[l + i] = defs[i];
++          const kids = paragraph.children ?? undefined;
++          let i = kids?.length ?? 1;
++          if (kids) {
++            for (let n = kids.indexOf(node); i > n; i--) {
++              kids[i] = kids[i - 1];
++            }
++            const i1 = i + 1;
++            const position = node.position;
++            if (position) {
++              kids[i1] = {
++                type: 'footnoteReference',
++                identifier: node.value,
++                label: node.value,
++                kind: 'rfg',
++                position: {
++                  end: { column: 1, line: position.end.line },
++                  start: { column: 1, line: position.start.line }
++                }
++              } as unknown as GenericNode;
++              const identifierNumber = Number(kids[i1].identifier);
++              if (!Number.isNaN(identifierNumber) && identifierNumber > 0) {
++                kids[i1].number = identifierNumber;
++                kids[i1].enumerator = String(identifierNumber);
++              } else {
++                rfgCount = nextNumber(rfgCount, reserved);
++                kids[i1].number = rfgCount;
++                kids[i1].enumerator = String(rfgCount);
++              }
++              if (node.children && node.children.length > 0) {
++                return;
++              }
++              const parb = {
++                type: 'paragraph',
++                children: [node],
++                position: {
++                  end: { column: 1, line: position.end.line },
++                  start: { column: 1, line: position.start.line }
++                }
++              } as unknown as GenericNode;
++              const def = {
++                type: 'footnoteDefinition',
++                identifier: node.value,
++                label: node.value,
++                children: [parb],
++                position: {
++                  end: { column: 1, line: position.end.line },
++                  start: { column: 1, line: position.start.line }
++                }
++              } as unknown as GenericNode;
++              def.number = kids[i1].number;
++              def.enumerator = kids[i1].enumerator;
++              defs[defs.length] = def;
++              for (let j = 0; j < fds.length; j++) {
++                if (node.value === fds[j].identifier) {
++                  fds[j].children?.splice(0, 0, node);
++                  //const fd_kids = fds[j].children;
++                  //if (fd_kids) {
++                  //  for (let k = fd_kids.length; k > 0; k--) {
++                  //    fd_kids[k] = fd_kids[k - 1];
++                  //  }
++                  //  fd_kids[0] = node;
++                  //}
++                }
++              }
++            }
++          }
++          node.type = 'cite';
++          node.label = node.value;
++          node.identifier = node.value;
++          node.kind = 'parenthetical';
++          node.error = true;
++          delete node.value;
++          delete node.name;
++          delete node.position;
++          node.children = [{ type: 'text', value: node.label }];
++        }
++      });
++    });
++
++    const kid = tree.children[cell] as GenericNode;
++    if (kid) {
++      const kid1 = kid.children?.[0];
++      if (kid1) {
++        const kid2 = kid1.children;
++        if (kid2) {
++          const l = kid2.length;
++          const n = defs.length;
++          for (let i = 0; i < n; i++) {
++            kid2[l + i] = defs[i];
++          }
 +        }
 +      }
 +    }
@@ -562,9 +705,9 @@ diff -urN jupyterlab_myst-2.4.2/src/transforms/citations.ts jupyterlab_myst-2.4.
 +    addCiteChildrenTransform(tree, file);
 +    rfgRolesTransform(tree, file);
 +  };
-diff -urN jupyterlab_myst-2.4.2/style/base.css jupyterlab_myst-2.4.2-patch-source/style/base.css
+diff -urN jupyterlab_myst-2.4.2/style/base.css jupyterlab_myst-2.4.2-patched/style/base.css
 --- jupyterlab_myst-2.4.2/style/base.css	2020-02-02 01:00:00.000000000 +0100
-+++ jupyterlab_myst-2.4.2-patch-source/style/base.css	2024-10-11 07:11:32.109614703 +0200
++++ jupyterlab_myst-2.4.2-patched/style/base.css	2024-11-26 13:08:28.604551495 +0100
 @@ -40,3 +40,16 @@
    padding: var(--jp-private-markdownviewer-padding);
    overflow: auto;
@@ -582,9 +725,9 @@ diff -urN jupyterlab_myst-2.4.2/style/base.css jupyterlab_myst-2.4.2-patch-sourc
 +.hover-card-content[data-side='bottom'] {
 +  animation-name: slideDown;
 +}
-diff -urN jupyterlab_myst-2.4.2/tests/notebooks/book.bib jupyterlab_myst-2.4.2-patch-source/tests/notebooks/book.bib
+diff -urN jupyterlab_myst-2.4.2/tests/notebooks/book.bib jupyterlab_myst-2.4.2-patched/tests/notebooks/book.bib
 --- jupyterlab_myst-2.4.2/tests/notebooks/book.bib	1970-01-01 01:00:00.000000000 +0100
-+++ jupyterlab_myst-2.4.2-patch-source/tests/notebooks/book.bib	2024-10-11 07:09:49.962217371 +0200
++++ jupyterlab_myst-2.4.2-patched/tests/notebooks/book.bib	2024-11-26 13:08:28.604551495 +0100
 @@ -0,0 +1,108 @@
 +%%
 +%% This is file `book.bib',
@@ -694,10 +837,10 @@ diff -urN jupyterlab_myst-2.4.2/tests/notebooks/book.bib jupyterlab_myst-2.4.2-p
 +%% 
 +%%
 +%% End of file `book.bib'.
-diff -urN jupyterlab_myst-2.4.2/tests/notebooks/citation-tooltips.ipynb jupyterlab_myst-2.4.2-patch-source/tests/notebooks/citation-tooltips.ipynb
+diff -urN jupyterlab_myst-2.4.2/tests/notebooks/citation-tooltips.ipynb jupyterlab_myst-2.4.2-patched/tests/notebooks/citation-tooltips.ipynb
 --- jupyterlab_myst-2.4.2/tests/notebooks/citation-tooltips.ipynb	1970-01-01 01:00:00.000000000 +0100
-+++ jupyterlab_myst-2.4.2-patch-source/tests/notebooks/citation-tooltips.ipynb	2024-10-11 07:09:49.962217371 +0200
-@@ -0,0 +1,80 @@
++++ jupyterlab_myst-2.4.2-patched/tests/notebooks/citation-tooltips.ipynb	2024-11-26 13:01:26.763668556 +0100
+@@ -0,0 +1,111 @@
 +{
 + "cells": [
 +  {
@@ -711,7 +854,23 @@ diff -urN jupyterlab_myst-2.4.2/tests/notebooks/citation-tooltips.ipynb jupyterl
 +    }
 +   },
 +   "source": [
++    "{rfg}`book-minimal`\n",
++    "\n",
++    "[^book-minimal]: Sometimes, you need to explain a point\n",
++    "\n",
++    "    with some extra text!\n",
++    "\n",
++    "    - and some *serious* points 💥\n",
++    "    - and even images!\n",
++    "\n",
++    "    ![Mountains!](https://github.com/rowanc1/pics/blob/main/mountains.png?raw=true)\n",
++    "\n",
++    "    Plus any preceding unindented lines,\n",
++    "that are not separated by a blank line\n",
++    "\n",
 +    "text1 {cite:p}`alexy,article-full`\n",
++    "\n",
++    "[^wondering]: footnote wonder\n",
 +    "\n",
 +    "tx1[^third_note] txt2\n",
 +    "\n",
@@ -719,35 +878,50 @@ diff -urN jupyterlab_myst-2.4.2/tests/notebooks/citation-tooltips.ipynb jupyterl
 +    "\n",
 +    "text2 {rfg}`koehler,huebner` text3\n",
 +    "\n",
-+    "{rfg}`book-minimal`\n",
-+    "\n",
 +    "patati [^bkpttst]\n",
 +    "\n",
 +    "[^bkpttst]: Breakpointtest\n",
 +    "\n",
-+    "text4\n",
-+    "\n",
 +    "% Todo: tooltips for citations from https://github.com/krassowski/jupyterlab-citation-manager\n",
-+    "{rfg}<cite id=\"cite2c-29383/R7MVWURF\"><a href=\"#cite2c%7C29383%2FR7MVWURF\">(Kluyver &#38; Osborne, 2013)</a></cite>\n",
-+    "\n",
-+    " - list test\n",
-+    " - 2nd in list\n"
++    "% {rfg:cm}`kluyver13{<cite id=\"cite2c-29383/R7MVWURF\"><a href=\"#cite2c%7C29383%2FR7MVWURF\">(Kluyver &#38; Osborne, 2013)</a></cite>}`\n",
++    "%\n",
++    "% [^kluyver13]: no tooltips 4 citation manager yet"
 +   ]
 +  },
 +  {
 +   "cell_type": "markdown",
-+   "id": "5500510e-3d98-443e-ba31-6e58d079b028",
++   "id": "ed0e13e4-a018-405a-b6f1-d63717e646ca",
 +   "metadata": {},
 +   "source": [
-+    "[@alexy]\n",
++    "% Fails to resolve the dynamic parts in the cross-references taken from\n",
++    "% https://mystmd.org/guide/quickstart-myst-markdown#links-cross-references\n",
 +    "\n",
-+    "{rfg}`whole-journal`"
++    "As you have seen in the links in MyST (e.g. [](./frontmatter.md)), there is information that is pulled forward into your reading context on hover or click. We believe it is important to provide as much possible context when you are reading on elements like links to other pages, cross-references to figures, tables and equations as well as traditional academic citations {rfg}`article-full` (**👈 see the footnote!**). Additionally, all of these have fallbacks in static PDF or Word documents.\n",
++    "\n",
++    "[^article-full]:\n",
++    "    For example, in [](doi:10.1145/3411764.3445648) the authors showed you can speed up comprehension of a paper by 26% when showing information in context, rather than requiring researchers to scroll back and forth to find figures and equations.\n",
++    "\n",
++    "    Imagine if all of science was ⚡️ 26% faster ⚡️[^3]!! (**👈💥**)\\\n",
++    "    Designing the user-experience of scientific communication is _really_ important.\n",
++    "\n",
++    "[^3]:\n",
++    "    Just as an example of having lots of helpful information at your finger-tips, it would be nice to see the video of that article, _right_? Well here it is:\n",
++    "\n",
++    "    :::{iframe} https://www.youtube.com/embed/yYcQf-Yq8B0\n",
++    "    :::\n",
++    "\n",
++    "    Can't do that in a PDF! [^4] (**👈💥**)\n",
++    "\n",
++    "[^4]:\n",
++    "    I mean, now that you are down the rabbit-hole, we can get you back on track with a demo of [referencing equations](#example-equation-targets) (**👈💥**)\n",
++    "\n",
++    "    Or maybe you want to explore an [💥 interactive figure 💥](#fig-altair-horsepower)."
 +   ]
 +  },
 +  {
 +   "cell_type": "code",
 +   "execution_count": null,
-+   "id": "bded455f-1021-4df0-9bb0-0717e3943076",
++   "id": "4dd3ef8f-bb44-4cd6-8b49-543a8226c7fd",
 +   "metadata": {},
 +   "outputs": [],
 +   "source": []
@@ -772,15 +946,15 @@ diff -urN jupyterlab_myst-2.4.2/tests/notebooks/citation-tooltips.ipynb jupyterl
 +   "name": "python",
 +   "nbconvert_exporter": "python",
 +   "pygments_lexer": "ipython3",
-+   "version": "3.12.4"
++   "version": "3.12.5"
 +  }
 + },
 + "nbformat": 4,
 + "nbformat_minor": 5
 +}
-diff -urN jupyterlab_myst-2.4.2/tests/notebooks/xampl.bib jupyterlab_myst-2.4.2-patch-source/tests/notebooks/xampl.bib
+diff -urN jupyterlab_myst-2.4.2/tests/notebooks/xampl.bib jupyterlab_myst-2.4.2-patched/tests/notebooks/xampl.bib
 --- jupyterlab_myst-2.4.2/tests/notebooks/xampl.bib	1970-01-01 01:00:00.000000000 +0100
-+++ jupyterlab_myst-2.4.2-patch-source/tests/notebooks/xampl.bib	2024-10-11 07:09:49.962217371 +0200
++++ jupyterlab_myst-2.4.2-patched/tests/notebooks/xampl.bib	2024-11-26 13:08:28.604551495 +0100
 @@ -0,0 +1,361 @@
 +% Copyright (C) 1988, 2010 Oren Patashnik.
 +% Unlimited copying and redistribution of this file are permitted if it
